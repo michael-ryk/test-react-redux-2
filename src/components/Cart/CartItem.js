@@ -1,7 +1,25 @@
+import { useDispatch, useSelector  } from 'react-redux';
+import { appActions } from '../../store/index';
+
 import classes from './CartItem.module.css';
 
 const CartItem = (props) => {
-  const { title, quantity, total, price } = props.item;
+  const { title, quantity, total, price } = props;
+  
+  const dispatch = useDispatch();
+  const cartItemsList = useSelector((state) => state.cartItems);
+
+  const indexOfExistingItem = cartItemsList.findIndex(
+    (item) => item.title === title
+  );
+
+  const handleIncrease = () => {
+    dispatch(appActions.increaseQuantityOfItemInCart(indexOfExistingItem));
+  };
+
+  const handleDecrease = () => {
+    dispatch(appActions.decreaseQuantityOfItemInCart(indexOfExistingItem));
+  }
 
   return (
     <li className={classes.item}>
@@ -17,8 +35,8 @@ const CartItem = (props) => {
           x <span>{quantity}</span>
         </div>
         <div className={classes.actions}>
-          <button>-</button>
-          <button>+</button>
+          <button onClick={handleDecrease}>-</button>
+          <button onClick={handleIncrease}>+</button>
         </div>
       </div>
     </li>
