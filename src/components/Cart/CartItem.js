@@ -1,25 +1,22 @@
-import { useDispatch, useSelector  } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { appActions } from '../../store/index';
 
 import classes from './CartItem.module.css';
 
 const CartItem = (props) => {
   const { title, quantity, total, price } = props;
-  
-  const dispatch = useDispatch();
-  const cartItemsList = useSelector((state) => state.cartItems);
 
-  const indexOfExistingItem = cartItemsList.findIndex(
-    (item) => item.title === title
-  );
+  const dispatch = useDispatch();
 
   const handleIncrease = () => {
-    dispatch(appActions.increaseQuantityOfItemInCart(indexOfExistingItem));
+    dispatch(
+      appActions.addItemToCart({ title: title, total: total, price: price })
+    );
   };
 
   const handleDecrease = () => {
-    dispatch(appActions.decreaseQuantityOfItemInCart(indexOfExistingItem));
-  }
+    // Remove Decrease - TBD
+  };
 
   return (
     <li className={classes.item}>

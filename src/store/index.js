@@ -35,6 +35,7 @@ const appSlice = createSlice({
             quantity: 1,
             total: newItem.price,
             price: newItem.price,
+            description: newItem.description,
           },
         ];
       }
