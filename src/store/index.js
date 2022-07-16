@@ -14,21 +14,45 @@ const appSlice = createSlice({
       state.cartIsShown = !state.cartIsShown;
     },
     addItemToCart(state, action) {
-      state.cartItems = [...state.cartItems, action.payload];
-      state.totalQuantity +=1;
+      const newItem = action.payload;
+      const itemToUpdate = state.cartItems.find(
+        (item) => item.title === newItem.title
+      );
+
+      if (itemToUpdate) {
+        // item already exist - update
+        console.log('Item exist: update');
+        itemToUpdate.quantity = itemToUpdate.quantity + 1;
+        itemToUpdate.total = itemToUpdate.total + itemToUpdate.price;
+      } else {
+        // Item not exist - add it
+        console.log('Item not exist: create');
+        state.cartItems = [
+          ...state.cartItems,
+          {
+            id: new Date().getTime().toString(),
+            title: newItem.title,
+            quantity: 1,
+            total: newItem.price,
+            price: newItem.price,
+          },
+        ];
+      }
+
+      state.totalQuantity += 1;
     },
     increaseQuantityOfItemInCart(state, action) {
       const index = action.payload;
       state.cartItems[index].quantity += 1;
       state.cartItems[index].total += state.cartItems[index].price;
-      state.totalQuantity +=1;
+      state.totalQuantity += 1;
     },
     decreaseQuantityOfItemInCart(state, action) {
       const index = action.payload;
       state.cartItems[index].quantity -= 1;
       state.cartItems[index].total -= state.cartItems[index].price;
-      state.totalQuantity -=1;
-    }
+      state.totalQuantity -= 1;
+    },
   },
 });
 

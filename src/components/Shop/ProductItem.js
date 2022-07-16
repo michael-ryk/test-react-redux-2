@@ -11,25 +11,14 @@ const ProductItem = (props) => {
 
   const handleAddToCart = () => {
 
-    const indexOfExistingItem = cartItemsList.findIndex(
-      (item) => item.title === title
+    dispatch(
+      appActions.addItemToCart({
+        title: title,
+        price: price,
+        description: description
+      })
     );
 
-    if (indexOfExistingItem < 0) {
-      //item not in list - create new
-      dispatch(
-        appActions.addItemToCart({
-          id: new Date().getTime().toString(),
-          title: title,
-          quantity: 1,
-          total: price,
-          price: price,
-        })
-      );
-    } else {
-      //item already in list - update
-      dispatch(appActions.increaseQuantityOfItemInCart(indexOfExistingItem));
-    }
   };
 
   return (
