@@ -20,38 +20,41 @@ const appSlice = createSlice({
       );
 
       if (itemToUpdate) {
-        // item already exist - update
-        console.log('Item exist: update');
-        itemToUpdate.quantity = itemToUpdate.quantity + 1;
+        // Item already exist - update
+        itemToUpdate.quantity++;
         itemToUpdate.total = itemToUpdate.total + itemToUpdate.price;
       } else {
-        // Item not exist - add it
-        console.log('Item not exist: create');
+        // Item not exist - create new
         state.cartItems = [
           ...state.cartItems,
           {
             id: new Date().getTime().toString(),
             title: newItem.title,
-            quantity: 1,
             total: newItem.price,
             price: newItem.price,
             description: newItem.description,
+            quantity: 1,
           },
         ];
       }
 
       state.totalQuantity += 1;
     },
-    increaseQuantityOfItemInCart(state, action) {
-      const index = action.payload;
-      state.cartItems[index].quantity += 1;
-      state.cartItems[index].total += state.cartItems[index].price;
-      state.totalQuantity += 1;
-    },
-    decreaseQuantityOfItemInCart(state, action) {
-      const index = action.payload;
-      state.cartItems[index].quantity -= 1;
-      state.cartItems[index].total -= state.cartItems[index].price;
+    removeItemFromCart(state, action) {
+      const itemToRemove = action.payload;
+      const itemToUpdate = state.cartItems.find(
+        (item) => item.title === itemToRemove.title
+      );
+
+      if (itemToUpdate.quantity === 1) {
+        // Last item - Remove it
+        state.cartItems = state.cartItems.filter(item => item.title !== itemToRemove.title);
+      } else {
+        // Not last item - update
+        itemToUpdate.quantity--;
+        itemToUpdate.total = itemToUpdate.total - itemToUpdate.price;
+      }
+
       state.totalQuantity -= 1;
     },
   },

@@ -15,7 +15,9 @@ const CartItem = (props) => {
   };
 
   const handleDecrease = () => {
-    // Remove Decrease - TBD
+    dispatch(
+      appActions.removeItemFromCart({ title: title, total: total, price: price })
+    );
   };
 
   return (
